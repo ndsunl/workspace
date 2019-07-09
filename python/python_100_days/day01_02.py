@@ -1,13 +1,15 @@
 import turtle
 
-turtle.pensize(4)
-turtle.pencolor('red')
-turtle.forward(100)
-turtle.right(90)
-turtle.forward(100)
-turtle.right(90)
-turtle.forward(100)
-turtle.right(90)
-turtle.forward(100)
+t = turtle.Turtle()
+t.color('red', 'yellow')
+t.begin_fill()
 
-turtle.mainloop()
+while True:
+    t.forward(200)
+    t.left(170)
+    if abs(t.pos()) < 1:
+        break
+
+t.end_fill()
+
+turtle.done()
