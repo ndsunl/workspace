@@ -43,6 +43,6 @@ while money > 0:
             money -= chip
             print("庄家胜!")
             go_on = False
+
+print()
 print("你的总资产为零，游戏结束!")
-
-
