@@ -15,14 +15,34 @@ Author: ndsunl
 
 import random
 
-print("你的总资产为 1000")
 money = 1000
-chip = int(input("请下注: "))
-first = random.randint(1, 6) + random.randint(1, 6)
-if first == 7 or first == 11:
-    money += chip
-    print(f"玩家胜，您的筹码为 {money}")
-elif first == 2 or first == 3 or first == 12:
-    money -= chip
-    print(f"庄家胜，您的筹码为 {money}")
-else:    
+while money > 0:
+    go_on = False
+    print()
+    print(f"您的总资产为 {money}")
+    chip = int(input("请下注: "))
+    first = random.randint(1, 6) + random.randint(1, 6)
+    print(f"您掷的点数为 {first}")
+    if first == 7 or first == 11:
+        money += chip
+        print("玩家胜!")
+    elif first == 2 or first == 3 or first == 12:
+        money -= chip
+        print("庄家胜!")
+    else:
+        go_on = True
+
+    while go_on:
+        other = random.randint(1, 6) + random.randint(1, 6)
+        print(f"您掷的点数为 {other}")
+        if other == first:
+            money += chip
+            print("玩家胜!")
+            go_on = False
+        elif other == 7:
+            money -= chip
+            print("庄家胜!")
+            go_on = False
+print("你的总资产为零，游戏结束!")
+
+
