@@ -1,5 +1,5 @@
 def foo():
-    global a
+    " global a "
     a = 200
     print(a)    # 200
 

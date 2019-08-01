@@ -4,8 +4,7 @@ def roll_dice(n=2):
     """
     摇色子
 
-    :param n: 色子的个数
-    :return: n 颗色子点数之和
+    返回n颗色子点数之和
     """
 
     total = 0
