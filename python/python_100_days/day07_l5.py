@@ -31,7 +31,7 @@ def main():
     print(which_day(1980, 11, 28))
     print(which_day(1981, 12, 31))
     print(which_day(2018, 1, 1))
-    print(which_day(2019, 8, 3))
+    print(which_day(2019, 8, 23))
 
 
 if __name__ == '__main__':
