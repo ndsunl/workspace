@@ -7,12 +7,10 @@ def use_logging(func):
         return func()  # 传入参数foo，则func()等于foo()
     return wrapper
 
-
+# @语法糖
+@ use_logging
 def foo():
     print("I am foo")
 
 
-# 装饰器use_logging(foo)返回函数对象wrapper
-# 所以这条语句相当于foo=wrapper
-foo = use_logging(foo)
-foo()   # 相当于执行wrapper()
+foo()
