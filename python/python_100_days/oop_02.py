@@ -41,6 +41,8 @@ def main():
     bart.set_score(76)
     print(f"{bart.get_name()}:{bart.get_grade()}")
 
+    print(f"成绩是{lisa._Student__name}")
+
 
 if __name__ == "__main__":
     main()
