@@ -44,3 +44,7 @@ print("==当前状态==")
 print(f"僵尸z1 HP: {z1.getHealthPoint()}")
 print(f"僵尸z2 HP: {z2.getHealthPoint()}")
 print(f"豌豆射手p1 HP: {p1.getHealthPoint()}")
+
+print("==普通僵尸z1、z2进入花园==")
+
+print(f"z1早")

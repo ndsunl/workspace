@@ -36,4 +36,4 @@ print("当前普通僵尸z1的HP:")
 z1.showHealthPoint()
 
 z1.beHit(10)
-print("当前普通僵尸z1的HP:")
+print(f"当前普通僵尸z1的HP: {z1.healthPoint}")
