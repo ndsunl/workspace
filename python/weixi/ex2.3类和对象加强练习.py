@@ -2,6 +2,7 @@
 类和对象的加强练习
 """
 
+
 class CommonZombie:
 
     def __init__(self):
@@ -21,6 +22,7 @@ class CommonZombie:
         self.healthPoint -= lostPoint
         return self.lostPoint
 
+
 class PeaShooter:
 
     def __init__(self):
@@ -35,6 +37,7 @@ class PeaShooter:
 
     def getDamagePoint(self):
         return self.damagePoint
+
 
 z1 = CommonZombie()
 z2 = CommonZombie()
