@@ -20,7 +20,7 @@ class CommonZombie:
 
     def beHit(self, lostPoint):
         self.healthPoint -= lostPoint
-        return self.lostPoint
+        return lostPoint
 
 
 class PeaShooter:
@@ -50,4 +50,23 @@ print(f"豌豆射手p1 HP: {p1.getHealthPoint()}")
 
 print("==普通僵尸z1、z2进入花园==")
 
-print(f"z1早")
+print(f"z1遭到对方攻击，生命值损失{z1.beHit(p1.getDamagePoint())}")
+print(f"z1遭到对方攻击，生命值损失{z1.beHit(p1.getDamagePoint())}")
+print(f"z2遭到对方攻击，生命值损失{z2.beHit(p1.getDamagePoint())}")
+
+print("==当前状态==")
+print(f"僵尸z1 HP: {z1.getHealthPoint()}")
+print(f"僵尸z2 HP: {z2.getHealthPoint()}")
+print(f"豌豆射手p1 HP: {p1.getHealthPoint()}")
+
+print("==普通僵尸z1、z2继续前进==")
+
+print(f"z1遭到对方攻击，生命值损失{z1.beHit(p1.getDamagePoint())}")
+print(f"z1遭到对方攻击，生命值损失{z1.beHit(p1.getDamagePoint())}")
+print(f"z1遭到对方攻击，生命值损失{z1.beHit(p1.getDamagePoint())}")
+print(f"z1遭到对方攻击，生命值损失{z1.beHit(p1.getDamagePoint())}")
+
+print("==当前状态==")
+print(f"僵尸z1 HP: {z1.getHealthPoint()}")
+print(f"僵尸z2 HP: {z2.getHealthPoint()}")
+print(f"豌豆射手p1 HP: {p1.getHealthPoint()}")
