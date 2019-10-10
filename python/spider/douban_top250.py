@@ -19,6 +19,16 @@ def find_movies(res):
     # 电影名
     movies = []
     targets = soup.find_all('div', class_="hd")
+
+    # 评分
+    ranks = []
+    targets = soup.find_all('span', class_="rating_num")
+
+    result = {}
+    length = len(movies)
+    for i in range(length):
+        result.append(movies[i] + ranks[i] + '\n')
+
     
 
 
