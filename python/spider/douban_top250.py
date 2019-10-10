@@ -34,7 +34,7 @@ def find_movies(res):
     targets = soup.find_all('div', class_='bd')
     for each in targets:
         try:
-            messages.append(each.p.text)
+            messages.append(each.p.text.split('\n')[1].strip() + each.p.text.split('\n')[2].strip())
         except:
             continue
     
