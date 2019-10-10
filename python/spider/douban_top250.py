@@ -13,27 +13,61 @@ def open_url(url):
 
     return res
 
+
 def find_movies(res):
     soup = bs4.BeautifulSoup(res.text, "html.parser")
 
     # 电影名
     movies = []
     targets = soup.find_all('div', class_="hd")
+    for each in targets:
+        movies.append(each.a.span.text)
 
     # 评分
     ranks = []
     targets = soup.find_all('span', class_="rating_num")
+    for each in targets:
+        ranks.append(f' 评分：{each.text}')
 
-    result = {}
+    # 资料
+    messages = []
+    targets = soup.find_all('div', class_='bd')
+    for each in targets:
+        try:
+            messages.append(each.p.text)
+        except:
+            continue
+    
+    result = []
     length = len(movies)
     for i in range(length):
-        result.append(movies[i] + ranks[i] + '\n')
+        result.append(movies[i] + ranks[i] + messages[i] + '\n')
 
-    
+    return result
 
 
-res = requests.get("https://movie.douban.com/top250")
-soup = bs4.BeautifulSoup(res.text, "html.parser")
-targets = soup.find_all('div', class_="hd")
-for each in targets:
-    print(each.a.span.text)
+
+def find_depth(res):
+    """页面数统计"""
+    soup = bs4.BeautifulSoup(res.text, 'html.parser')
+    depth = soup.find('span', class_='next').previous_sibling.previous_sibling.text
+
+    return(depth)
+
+def main():
+    host = "https://movie.douban.com/top250"
+    res = open_url(host)
+    depth = find_depth(res)
+
+    result = []
+    for i in range(int(depth)):
+        url = f'{host}?start={25*i}'
+        res = open_url(url)
+        result.extend(find_movies(res))
+
+    with open("豆瓣TOP250电影.txt", "w", encoding="utf-8") as f:
+        for each in result:
+            f.write(each)
+
+if __name__ == "__main__":
+    main()
