@@ -14,23 +14,17 @@ def get_url(url):
         'encSecKey': encSecKey}
     target_url = 'https://music.163.com/weapi/v1/resource/comments/R_SO_4_4466775?csrf_token='
 
+    res = requests.post(target_url, headers=headers, data=data)
+    
     return res
 
-
-def get_data(res):
-    soup = bs4.BeautifulSoup(res.text, 'html.parser')
-    data = soup.find_all('img', class_="brand-tag brand-vip")
-
-    return data
 
 
 def main():
     url = input('请输入链接地址：')
     res = get_url(url)
-    data = get_data(res)
 
-    print(data)
-
+    with reac
 
 if __name__ == "__main__":
     main()
