@@ -19,12 +19,13 @@ def get_url(url):
     return res
 
 
-
 def main():
     url = input('请输入链接地址：')
     res = get_url(url)
 
-    with reac
+    with open('comment.txt', 'w', encoding='utf-8') as file:
+        for each in file:
+            file.write(each)
 
 if __name__ == "__main__":
     main()
