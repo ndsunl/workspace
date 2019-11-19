@@ -6,6 +6,10 @@ class DataBaseManager(object):
         """
         你需要在这里初始化MongoDB的连接，连上本地MongoDB，库名为chapter_4，集合名为people_info
         """
+        client = MongoClient()
+        database = client.chapter_4
+        self.handler = database.people_info
+
 
     def query_info(self):
         """
@@ -13,13 +17,10 @@ class DataBaseManager(object):
         查询集合people_info并返回所有"deleted"字段为0的数据。
         注意返回的信息需要去掉_id
         """
-        return [
-            {'id': 1, 'name': '测试数据', 'age': 18, 'birthday': '2000-01-02',
-             'origin_home': '测试数据', 'current_home': '测试数据'},
-            {'id': 2, 'name': '测试数据', 'age': 18, 'birthday': '2000-01-02',
-             'origin_home': '测试数据', 'current_home': '测试数据'},
-            {'id': 3, 'name': '测试数据', 'age': 18, 'birthday': '2000-01-02',
-             'origin_home': '测试数据', 'current_home': '测试数据'}]
+        info_list = list(self.handler.find({"deleted": 0}, {"_id": 0}))
+        
+        return info_list
+
 
     def _query_last_id(self):
         """
@@ -30,7 +31,9 @@ class DataBaseManager(object):
 
         :return: 最新ID
         """
-        return 0
+        last_id = self.handler.find({}, {'_id':0, 'id':1}).sort('id', -1).limit(1)
+
+        return last_id[0]['id'] if last_id else 0
 
     def add_info(self, para_dict):
         """
