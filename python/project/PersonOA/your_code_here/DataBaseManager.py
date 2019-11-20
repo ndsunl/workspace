@@ -9,7 +9,11 @@ class DataBaseManager(object):
         client = MongoClient()
         database = client.chapter_4
         self.handler = database.people_info
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> 111b300692f5add8689036e93b82b8ea5700bdc6
 
     def query_info(self):
         """
@@ -17,9 +21,16 @@ class DataBaseManager(object):
         查询集合people_info并返回所有"deleted"字段为0的数据。
         注意返回的信息需要去掉_id
         """
+<<<<<<< HEAD
         info_list = list(self.handler.find({"deleted" :0}, {'_id':0}))
 
         return list(info_list)
+=======
+        info_list = list(self.handler.find({"deleted": 0}, {"_id": 0}))
+        
+        return info_list
+
+>>>>>>> 111b300692f5add8689036e93b82b8ea5700bdc6
 
     def _query_last_id(self):
         """
@@ -30,8 +41,14 @@ class DataBaseManager(object):
 
         :return: 最新ID
         """
+<<<<<<< HEAD
         
         return 0
+=======
+        last_id = self.handler.find({}, {'_id':0, 'id':1}).sort('id', -1).limit(1)
+
+        return last_id[0]['id'] if last_id else 0
+>>>>>>> 111b300692f5add8689036e93b82b8ea5700bdc6
 
     def add_info(self, para_dict):
         """
