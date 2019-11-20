@@ -48,11 +48,12 @@ class DataBaseManager(object):
         :param para_dict: 格式为{'name': 'xxx', 'age': 12, 'birthday': '2000-01-01', 'origin_home': 'xxx', 'current_home': 'yyy', 'deleted': 0}
         :return: True或者False
         """
-        current_id += _query_last_id()
+        current_id = 1
+        current_id += self._query_last_id()
         para_dict.update(id = current_id)
         self.handler.insert_one(para_dict)
 
-        last_id = _query_last_id()
+        last_id = self._query_last_id()
 
         return True if last_id == current_id else False
         
@@ -66,8 +67,14 @@ class DataBaseManager(object):
         :param para_dict: 格式为{'name': 'xxx', 'age': 12, 'birthday': '2000-01-01', 'origin_home': 'xxx', 'current_home': 'yyy'}
         :return: True或者False
         """
+        try:
+            self.handler.update_one({'id': people_id}, {'$set': para_dict})
+        except Exception as e:
+            print(f'修改数据失败，信息如下: {e}')
+            return False
 
         return True
+
 
     def del_info(self, people_id):
         """
@@ -76,6 +83,12 @@ class DataBaseManager(object):
         :param people_id: 人员id
         :return: True或者False
         """
+        try:
+            self.handler.update_one({'id': people_id}, {'$set': {'deleted': 1}})
+        except Exception as e:
+            print(f'删除数据失败，信息如下: {e}')
+            return False
+            
         return True
 
 
