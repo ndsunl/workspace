@@ -22,9 +22,10 @@ if __name__ == "__main__":
     realpath = os.path.realpath(__file__)
     # 去掉文件名，返回目录
     dirname = os.path.dirname(realpath)
-    # 寻找 jpg 文件类型
-    extension = 'jpg'
-    # 获取当前工作目录下所有 jpg 文件
-    file_list = glob.glob('*.'+extension)
-    for filename in file_list:
-        check_pic(filename)
+    g = os.walk(dirname)
+    for path,d,filelist in g:
+        filelist.sort()
+        for filename in filelist:
+            if filename.endswith('jpg'):
+                count += 1
+                check_pic(os.path.join(path, filename))
