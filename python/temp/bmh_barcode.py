@@ -20,6 +20,9 @@ def barcode128(filepath, name):
 
 
 def main():
+    """
+    功能： 生成研考考生报名号条形码
+    """
     print("正在生成条形码，请稍候...")
     source_filepath = '/home/jackchen/2020年硕士研究生编排管理系统-修正版/zp/print'
     targer_filepath = '/home/jackchen/2020年硕士研究生编排管理系统-修正版/barcode'

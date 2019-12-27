@@ -5,7 +5,7 @@ import glob
 
 def check_pic(filename):
     """
-    功能: 检测 jpg 文件为全黑或全白图像
+    功能: 检测 jpg 文件为全黑或全白图像, 可用于高考报名相片检查
     参数: filename 文件名
     返回: 1=全黑、2=全白
     """
