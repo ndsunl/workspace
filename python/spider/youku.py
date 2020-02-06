@@ -14,9 +14,8 @@ def open_url(url):
 def main():
     url = "http://list.youku.com/albumlist/show/id_21619857"
     res = open_url(url)
-    soup = bs4.BeautifulSoup(res.text, "html.parser")
     with open('youku.txt', 'w', encoding='utf-8') as f:
-        for each in soup:
+        for each in res.text:
             f.write(each)
         f.close
 
