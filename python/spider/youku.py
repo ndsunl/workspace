@@ -1,9 +1,18 @@
 import requests
-import bs4
+from bs4 import BeautifulSoup
 import re
+import os
 
 
 def open_url(url):
+    """ 抓取指定网页
+    
+    param: 
+        url: 要抓取的网址
+    
+    return: 
+        即要抓取的网页内容，Response 对象
+    """
     headers = {
         "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36"}
     res = requests.get(url, headers=headers)
@@ -11,13 +20,143 @@ def open_url(url):
     return res
 
 
-def main():
-    url = "http://list.youku.com/albumlist/show/id_21619857"
-    res = open_url(url)
-    with open('youku.txt', 'w', encoding='utf-8') as f:
-        for each in res.text:
-            f.write(each)
+def get_url(url):
+    """ 获取播单下所有视频播放地址
+    
+    param:
+        url: 播单地址
+    
+    return:
+        列表 data 为播单下所有视频播放地址
+    """
+    data = []
+    str = 'http://player.youku.com/embed/'
+
+    while data == []:
+        res = open_url(url)
+        soup = BeautifulSoup(res.text, 'html.parser')
+
+        bz = re.search(r'albumlist\/show\/id_', url)
+        if bz is None:  # 单个视频
+            class_a = 'anthology-content'
+            class_b = 'pic-text-item'
+        else:           # 播单
+            class_a = 'fix'
+            class_b = 'p-thumb'
+
+        target = soup.find('div', class_=class_a)
+        
+        if target != None:
+            target = target.find_all('div', class_=class_b)
+            # 解析并将播单下所有视频播放地址加入列表
+            for i in range(len(target)):
+                url = target[i].a.get('href')
+                target_url = re.search(r'\/\/v\.youku\.com\/v_show\/id_\w*', url).group()
+                target_url = re.sub(r'\/\/v\.youku\.com\/v_show\/id_', str, url)
+                data.append(target_url)
+        else:
+            print(f'播单页面获取出错，正在重新抓取数据 ... ')
+
+    return data
+
+
+def get_channel(res):
+    """ 解析并提取自频道中播单地址及播单名
+    
+    param:
+        res: 要解析的网页内容，Response 对象
+    
+    return:
+        返回值 data 为包含播单地址及播单名的列表
+        example: [{'url': 播单地址, 'title': 播单名}, {...}]
+    """
+    data = []
+    soup = BeautifulSoup(res.text, 'html.parser')
+    target = soup.find_all('div', class_='album-cover')
+
+    for i in range(len(target)):
+        # 获取播单名, 同时删除播单名中的中文符号
+        title = target[i].a.get('title')
+        title = re.sub(r'[〈〉-《》【】-]', '_', title)
+        title = re.sub(r'^_|_$', '', title)
+        title = re.sub(r'__', '_', title)
+        
+        # 获取有效播单地址
+        v_link = soup.find_all('div', class_='v-link')
+
+        for i in range(len(v_link)):
+            list_url = v_link[i].a.get('href')
+            list_title = v_link[i].a.get('title')
+            if list_title != '[此视频无法播放]':
+                channel_url = 'http:' + list_url
+                break
+        
+        data.append({'url':channel_url, 'title':title})
+
+    return data
+
+
+def save_url(data, title):
+    """ 将视频播放地址存入指定文件
+
+    param：
+        data: 包含播单中所有视频播放地址的列表
+        title: 播单名
+    """
+    if len(data) != 0:
+        if not os.path.exists('vedio'):
+            os.makedirs('vedio')
+
+        filename = 'vedio/' + title + '.txt'
+        with open(filename, 'w', encoding='utf-8') as f:
+            for i in range(len(data)):
+                f.write(data[i] + '\n')
         f.close
+        print(f'视频播放地址已存入文件：{filename}')
+
+
+def get_page(res):
+    """ 获取播单页数
+
+    param:
+        res: 要解析的网页内容，Response 对象
+    
+    return:
+        播单页数
+    """
+    soup = BeautifulSoup(res.text, 'html.parser')
+    if soup.find('li', class_='next').previous_sibling.a != None:
+        page = soup.find('li', class_='next').previous_sibling.a.text
+    else:
+        page = soup.find('li', class_='next').previous_sibling.span.text
+
+    return int(page)
+
+
+def main():
+    channel_data = []
+    url = input("请输入优酷自频道地址:")
+
+    # 检查是否自频道地址    
+    while re.search(r'i\.youku\.com\/i', url) is None:
+        print('error: 您输入的不是优酷自频道地址！请核对')
+        url = input("请输入优酷自频道地址:")
+    
+    res = open_url(url)  
+    page = get_page(res)
+    for i in range(page):
+        print("")
+        print(f"===================== 正在抓取播单第 {i+1} 页 =====================")
+     
+        channel_url = url + '&order=1&page=' + str(i+1)
+        res = open_url(channel_url)
+        channel_data = get_channel(res)
+
+        for j in range(len(channel_data)):
+            channel_url = channel_data[j].get('url')
+            channel_title = str(i) + str(j) + '_' +channel_data[j].get('title')
+            vedio_data = get_url(channel_url)
+            save_url(vedio_data, channel_title)
 
 
 if __name__ == "__main__":
