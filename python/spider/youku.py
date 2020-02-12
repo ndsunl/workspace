@@ -51,9 +51,9 @@ def get_url(url):
             # 解析并将播单下所有视频播放地址加入列表
             for i in range(len(target)):
                 url = target[i].a.get('href')
-                target_url = re.search(r'\/\/v\.youku\.com\/v_show\/id_\w*', url).group()
-                target_url = re.sub(r'\/\/v\.youku\.com\/v_show\/id_', str, url)
-                data.append(target_url)
+                url = re.search(r'\/\/v\.youku\.com\/v_show\/id_\w*', url).group()
+                url = re.sub(r'\/\/v\.youku\.com\/v_show\/id_', str, url)
+                data.append(url)
         else:
             print(f'播单页面获取出错，正在重新抓取数据 ... ')
 
@@ -82,14 +82,19 @@ def get_channel(res):
         title = re.sub(r'__', '_', title)
         
         # 获取有效播单地址
-        v_link = soup.find_all('div', class_='v-link')
+        channel_url = target[i].a.get('href')
+        item = target[i].parent
+        v_link = item.find_all('div', class_='v-link')
+        if i == 1:
+            for i in range(len(v_link)):
+                print(channel_url)
+                print(v_link[i])
 
         for i in range(len(v_link)):
             list_url = v_link[i].a.get('href')
             list_title = v_link[i].a.get('title')
             if list_title != '[此视频无法播放]':
-                channel_url = 'http:' + list_url
-                break
+                  break
         
         data.append({'url':channel_url, 'title':title})
 
