@@ -77,25 +77,22 @@ def get_channel(res):
     for i in range(len(target)):
         # 获取播单名, 同时删除播单名中的中文符号
         title = target[i].a.get('title')
+        print(f'播单 {i} 标题：{title}')
         title = re.sub(r'[〈〉-《》【】-]', '_', title)
         title = re.sub(r'^_|_$', '', title)
         title = re.sub(r'__', '_', title)
         
         # 获取有效播单地址
-        channel_url = target[i].a.get('href')
+        channel_url = 'http:' + target[i].a.get('href')
         item = target[i].parent
         v_link = item.find_all('div', class_='v-link')
-        if i == 1:
-            for i in range(len(v_link)):
-                print(channel_url)
-                print(v_link[i])
-
+ 
         for i in range(len(v_link)):
-            list_url = v_link[i].a.get('href')
+            list_url = 'http:' + v_link[i].a.get('href')
             list_title = v_link[i].a.get('title')
             if list_title != '[此视频无法播放]':
-                  break
-        
+                channel_url = list_url
+                break
         data.append({'url':channel_url, 'title':title})
 
     return data
@@ -140,11 +137,12 @@ def get_page(res):
 
 def main():
     channel_data = []
-    url = input("请输入优酷自频道地址:")
+    print('优酷自频道播单视频下载地址爬取工具\n')
+    url = input("请输入优酷自频道\播单\视频地址:")
 
     # 检查是否自频道地址    
-    while re.search(r'i\.youku\.com\/i', url) is None:
-        print('error: 您输入的不是优酷自频道地址！请核对')
+    while (re.search(r'i\.youku\.com\/i', url) is None) or (re.search(r'playlists\?spm', url) is None):
+        print('\nerror: 您输入的不是优酷自频道地址！请核对')
         url = input("请输入优酷自频道地址:")
     
     res = open_url(url)  
