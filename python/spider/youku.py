@@ -24,7 +24,7 @@ def get_url(url):
     """ 获取播单下所有视频播放地址
     
     param:
-        url: 播单地址
+        url: 播单地址或单个视频地址
     
     return:
         列表 data 为播单下所有视频播放地址
@@ -77,7 +77,6 @@ def get_channel(res):
     for i in range(len(target)):
         # 获取播单名, 同时删除播单名中的中文符号
         title = target[i].a.get('title')
-        print(f'播单 {i} 标题：{title}')
         title = re.sub(r'[〈〉-《》【】-]', '_', title)
         title = re.sub(r'^_|_$', '', title)
         title = re.sub(r'__', '_', title)
@@ -90,7 +89,7 @@ def get_channel(res):
         for i in range(len(v_link)):
             list_url = 'http:' + v_link[i].a.get('href')
             list_title = v_link[i].a.get('title')
-            if list_title != '[此视频无法播放]':
+            if list_title != '[此视频无法播放]' and re.search('v\.youku\.com', list_url) is not None:
                 channel_url = list_url
                 break
         data.append({'url':channel_url, 'title':title})
@@ -138,15 +137,20 @@ def get_page(res):
 def main():
     channel_data = []
     print('优酷自频道播单视频下载地址爬取工具\n')
-    url = input("请输入优酷自频道\播单\视频地址:")
+    url = input("请输入优酷自频道\自频道播单地址:")
 
-    # 检查是否自频道地址    
-    while (re.search(r'i\.youku\.com\/i', url) is None) or (re.search(r'playlists\?spm', url) is None):
-        print('\nerror: 您输入的不是优酷自频道地址！请核对')
-        url = input("请输入优酷自频道地址:")
-    
-    res = open_url(url)  
+    # 检查是否优酷地址    
+    while re.search(r'i\.youku\.com\/', url) is None:
+        print('\nerror: 您输入的不是优酷自频道或自频道播单地址！请重新输入')
+        url = input("请输入优酷地址:")
+
+    # 自频道地址转为播单列表地址
+    if re.search(r'playlists', url) is None and re.search(r'\/i\.youku\.com\/i', url) is not None:
+        url = url + '/playlists?spm=a2hzp.8244740.0.0'
+        
+    res = open_url(url) 
     page = get_page(res)
+    # 获取当页所有播单地址
     for i in range(page):
         print("")
         print(f"===================== 正在抓取播单第 {i+1} 页 =====================")
@@ -155,6 +159,7 @@ def main():
         res = open_url(channel_url)
         channel_data = get_channel(res)
 
+        # 获取播单所有视频下载地址并存盘
         for j in range(len(channel_data)):
             channel_url = channel_data[j].get('url')
             channel_title = str(i) + str(j) + '_' +channel_data[j].get('title')
