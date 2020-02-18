@@ -1,3 +1,7 @@
+#！/usr/bin/env python3
+#-*-coding: UTF-8 -*-
+#Author ndsunl
+
 """
 获取优酷自频道播单中所有视频地址
 """
