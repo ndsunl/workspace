@@ -30,11 +30,11 @@ def get_url(filepath):
     for file in files:
         s = []
         if not os.path.isdir(file): # 判断是否文件夹，不是文件夹才打开
-            s.append(file)
+            s.append(file.strip('.txt'))
             f = open(filepath + '/' + file) # 打开文件
             iter_f = iter(f)    # 创建迭代器
             for line in iter_f:
-                s.append(line)
+                s.append(line.strip('\n'))
             data.append(s)
     
     return data
@@ -49,7 +49,6 @@ def get_vedio(url, vedio_format):
 def main():
     filepath = input('请输入文件路径：')
     url = get_url(filepath)
-    print(url)
     for i in range(len(url)):
         print("===========================================")
         for j in range(len(url[i])):
