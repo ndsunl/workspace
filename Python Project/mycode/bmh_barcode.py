@@ -1,3 +1,12 @@
+#!/usr/bin/env python
+# -*- encoding: utf-8 -*-
+'''
+@File    :   bmh_barcode.py
+@Time    :   2020/12/12 11:14:55
+@Author  :   ndsunl
+@Desc    :   在指定目录生成 code128 条码，研考使用
+'''
+
 import os
 import barcode
 from barcode.writer import ImageWriter

@@ -1,3 +1,12 @@
+#!/usr/bin/env python
+# -*- encoding: utf-8 -*-
+'''
+@File    :   网易云音乐评论.py
+@Time    :   2020/12/12 11:12:02
+@Author  :   ndsunl
+@Desc    :   获取网易云音乐指定链接的评论
+'''
+
 import requests
 import bs4
 import json

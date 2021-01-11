@@ -1,3 +1,12 @@
+#!/usr/bin/env python
+# -*- encoding: utf-8 -*-
+'''
+@File    :   豆瓣电影TOP250.py
+@Time    :   2020/12/12 10:56:40
+@Author  :   ndsunl
+@Desc    :   爬取豆瓣电影TOP250列表，并保存至 movies.txt 中。
+'''
+
 import requests
 import bs4
 
@@ -61,7 +70,7 @@ def main():
         res = get_url(url)
         result.extend(get_movies(res))
 
-    with open('movies.txt', 'w', encoding='utf-8') as f:
+    with open('spider/movies.txt', 'w', encoding='utf-8') as f:
         for each in result:
             f.write(each)
         f.close()

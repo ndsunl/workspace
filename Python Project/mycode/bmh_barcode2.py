@@ -27,8 +27,8 @@ def main():
     """
     print("正在生成条形码，请稍候...")
  
-    dbf_filepath = '/home/jackchen/2020年硕士研究生编排管理系统-修正版/userdb/sbm.dbf'
-    targer_filepath = '/home/jackchen/2020年硕士研究生编排管理系统-修正版/zp/barcode'
+    dbf_filepath = '/media/jackchen/SUNBOOT/2021YZ/考场编排软件/userdb/sbm.dbf'
+    targer_filepath = '/media/jackchen/SUNBOOT/2021YZ/考场编排软件/zp/barcode'
     
     table = DBF(dbf_filepath, encoding='gb18030', char_decode_errors='ignore')
     rec = 0
