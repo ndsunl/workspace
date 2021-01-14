@@ -17,7 +17,7 @@ def barcode128(filepath, name):
     bar = Code(name, writer=ImageWriter())
     fullname = os.path.join(filepath, name)
     # 保存条形码文件，条码高度5毫米，不显示文本
-    bar.save(fullname, {'module_height':5, 'write_text':False})
+    bar.save(fullname, {'module_height':5, 'write_text':True})
 
 
 def main():
@@ -27,8 +27,13 @@ def main():
     """
     print("正在生成条形码，请稍候...")
  
+<<<<<<< HEAD:python/mycode/bmh_barcode2.py
+    dbf_filepath = '/media/sun/Data/数据备份/研招/_2021yz/考场编排软件/userdb/sbm.dbf'
+    targer_filepath = '/media/sun/Data/数据备份/研招/_2021yz/考场编排软件/zp/barcode'
+=======
     dbf_filepath = '/media/jackchen/SUNBOOT/2021YZ/考场编排软件/userdb/sbm.dbf'
     targer_filepath = '/media/jackchen/SUNBOOT/2021YZ/考场编排软件/zp/barcode'
+>>>>>>> e2400ec90f5b4d4e54df2437119ba68e9a47d852:Python Project/mycode/bmh_barcode2.py
     
     table = DBF(dbf_filepath, encoding='gb18030', char_decode_errors='ignore')
     rec = 0
